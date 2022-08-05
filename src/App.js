@@ -9,7 +9,6 @@ function App() {
   
   const [show , setShow] = useState(false);
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
-  console.log(currentUser);
 
   function showLogSing() {
     if(show){
@@ -38,11 +37,8 @@ function App() {
     <div className="App">
       {currentUser ? (
         <div>
-          <p>
             Welcome, {currentUser.email}
             <Home />
-          </p>           
-          <button onClick={() => auth.signOut()}>Sign out</button>
         </div>
       ) : (
         <div className='logsing'>
