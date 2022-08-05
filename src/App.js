@@ -1,42 +1,53 @@
+import { useState, useEffect } from 'react';
 import './App.css';
-import { Routes , Route , NavLink } from 'react-router-dom';
 import Home from './Components/Home';
 import SingUp from './Components/SingUp';
 import Login from './Components/Login';
 import { auth } from './Components/Firebase';
 
 function App() {
-  console.log(auth.currentUser);
+  
+  const [show , setShow] = useState(false);
+  const [currentUser, setCurrentUser] = useState(auth.currentUser);
+  console.log(currentUser);
+
+  function showLogSing() {
+    if(show){
+      return <div className='logsing'>
+        <SingUp />
+        <button className='but' onClick={() => setShow(false)}>If you have an account <strong>Login</strong></button>        
+      </div> 
+    } 
+    else {
+      return <div className='logsing'>
+        <Login />
+        <button className='but' onClick={() => setShow(true)}>SingUp</button>        
+      </div>
+    }
+  }
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    }
+    );
+  }
+  , []);
+
   return (
     <div className="App">
-      <ul className='navbar'>
-        <li>
-          <NavLink className={"link"} to="/">Home</NavLink>
-        </li>
-        <li>
-          <NavLink 
-            className={"link"} to="/singup">SingUp</NavLink>
-        </li>
-        <li>
-          <NavLink className={"link"} to="/login">Login</NavLink>
-        </li>
-      </ul>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/singup" element={<SingUp />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-
-      {auth.currentUser ? (
+      {currentUser ? (
         <div>
           <p>
-            Welcome, {auth.currentUser.displayName}
-          </p>
+            Welcome, {currentUser.email}
+            <Home />
+          </p>           
           <button onClick={() => auth.signOut()}>Sign out</button>
         </div>
       ) : (
-        <div>
+        <div className='logsing'>
           <p>You are not logged in.</p>
+          {showLogSing()}          
         </div>
       )}
 

@@ -36,7 +36,7 @@
   border: 1px solid #e9ecef;
   flex-direction: column;
   margin: 0;
-  width: 20%;
+  width: 50%;
   height: 100%;
 }
 form{
@@ -53,14 +53,24 @@ form input{
   padding: 10px;
   width: 90%;
 }
-form button{
+form button , .but{
   margin: 10px;
   padding: 10px;
   width: 90%;
   border: none;
   background-color: #f8f9fa;
 }
-form button:hover{
+form button:hover , .but{
   background-color: #e9ecef;
   cursor: pointer;
+}
+.logsing{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  flex-direction: column;
+  margin: 0;
+  width: 100%;
+  height: 90vh;
 }
