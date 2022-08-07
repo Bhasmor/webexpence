@@ -24,24 +24,6 @@ form{
   width: 100%;
   height: 80%;
 }
-form input{
-  margin: 10px;
-  padding: 10px;
-  width: 90%;
-  font-size: 1.5em;
-}
-form button , .but{
-  margin: 10px;
-  padding: 1em;
-  width: 50%;
-  border: none;
-  background-color: #f8f9fa;
-  font-size: 1em;
-}
-form button:hover , .but:hover{
-  background-color: #e9ecef;
-  cursor: pointer;
-}
 .logsing{
   display: flex;
   justify-content: center;
@@ -58,7 +40,7 @@ form button:hover , .but:hover{
   margin: 0;
   width: 100%;
   height: 90vh;
-  flex-direction: column;
+  flex-direction: row;
   
 }
 .navbar{
@@ -94,4 +76,46 @@ form button:hover , .but:hover{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.home-content{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
+  margin: 5em;
+}
+.current-balance{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  flex-direction: column;
+  margin: 0;
+  width: 20em;
+  height: 10em;
+  border: #f8f9fa 1px solid;
+}
+.navlink{
+  color: #f8f9fa;
+  text-decoration: none;
+}
+.add-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+  width: 100%;
+  margin-left: 15%;
+}
+.add-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  width: 100%;
+  border: #f8f9fa 1px solid;
+  border-radius: 15px;
 }
