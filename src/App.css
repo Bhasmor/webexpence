@@ -41,7 +41,7 @@ form{
   width: 100%;
   height: 90vh;
   flex-direction: row;
-  
+  margin-left: 20%;  
 }
 .navbar{
   display: flex;
@@ -95,6 +95,7 @@ form{
   width: 20em;
   height: 10em;
   border: #f8f9fa 1px solid;
+  border-radius: 1em;
 }
 .navlink{
   color: #f8f9fa;
@@ -107,7 +108,6 @@ form{
   flex-direction: column;
   margin: 0;
   width: 100%;
-  margin-left: 15%;
 }
 .add-content{
   display: flex;

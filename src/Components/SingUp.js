@@ -1,23 +1,58 @@
-import React from "react";
+import { useState, Fragment } from "react";
 import { auth } from "./Firebase";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, IconButton, Snackbar, Alert } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function SingUp() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
-        console.log(auth);
+        setOpen(true);
+        setSuccessMessage("User created successfully");
       })
       .catch((error) => {
-        console.log(error);
+         setError(true)
+         setErrorMessage(error.message);
       });
   };
+
+  function handleKeyDown (e) {
+    if (e.key === "Enter") {
+      {handleSubmit(e)}
+    }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+    setError(false);
+  };
+
+  const action = (
+    <Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        style={{ color: "red" }}
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
 
   console.log(email, password);
   return (
@@ -29,6 +64,7 @@ export default function SingUp() {
           id="outlined-basic"
           label="Email"
           variant="outlined"
+          onKeyDown={handleKeyDown}
           type="email"
           style={{
             backgroundColor:"#f8f9fa",
@@ -42,6 +78,7 @@ export default function SingUp() {
           label="Password"
           variant="outlined"
           type="password"
+          onKeyDown={handleKeyDown}
           style={{
             backgroundColor:"#f8f9fa",
             width: "100%",
@@ -62,6 +99,29 @@ export default function SingUp() {
           SingUp
         </Button>
       </form>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        severity="success"
+        message="Successfully Added"
+        action={action}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={error}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message="An error occured"
+        action={action}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

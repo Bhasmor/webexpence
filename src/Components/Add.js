@@ -25,6 +25,7 @@ export default function Add() {
   const [inOut, setInOut] = useState(true);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const dateReverse = date.toLocaleDateString().split(".").reverse().join("-");
 
@@ -68,8 +69,6 @@ export default function Add() {
       </IconButton>
     </Fragment>
   );
-
-  console.log(incoexpence.amount);
 
   const incomeGroup = (
     <ButtonGroup variant="contained" aria-label="outlined primary button group">
@@ -148,6 +147,21 @@ export default function Add() {
   const req = incoexpence.amount === "" || isNaN(incoexpence.amount);
   const val = isNaN(incoexpence.amount) ? "" : incoexpence.amount;
 
+  const amountVal = (e) => {
+    console.log(e.target.value)
+    if(isNaN(e.target.value))
+      {
+        setError(true);
+        setErrorMessage("Amount must be a number");
+        throw new Error("Amount is not a number");
+      }
+      else{
+        setIncoexpence({
+          ...incoexpence,
+          amount: parseInt(e.target.value),
+      });
+    }
+  }
   return (
     <div className="add-container">
       <div className="add-content">
@@ -183,12 +197,7 @@ export default function Add() {
               variant="outlined"
               label="Amount"
               value={val}
-              onChange={(e) =>
-                setIncoexpence({
-                  ...incoexpence,
-                  amount: parseInt(e.target.value),
-                })
-              }
+              onChange={amountVal}
               style={{
                 backgroundColor: "#f8f9fa",
                 margin: "5px",
@@ -267,7 +276,7 @@ export default function Add() {
         action={action}
       >
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          An error occured!
+          {errorMessage}
         </Alert>
       </Snackbar>
     </div>
