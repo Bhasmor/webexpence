@@ -1,5 +1,6 @@
-import React from 'react'
+import React from "react";
 import CureencyRenderer from "./CureencyRenderer";
+import Data from "./data/Data";
 
 export default function Show() {
   return (
@@ -8,6 +9,7 @@ export default function Show() {
         <h2>Current Balance</h2>
         <CureencyRenderer />
       </div>
+        <Data />
     </div>
-  )
+  );
 }

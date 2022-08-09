@@ -33,7 +33,6 @@ export default function CureencyRenderer() {
   
   useEffect(() => {
     getData();
-    console.log(currencyBalance);
   }, [getData]);
 
   return <div><h1>{incoexpence.length !== undefined ? currencyBalance : null}</h1></div>;
