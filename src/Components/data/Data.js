@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import Chart from "chart.js/auto";
-import { Line } from "react-chartjs-2";
+import { Line, Doughnut } from "react-chartjs-2";
 import { auth, db } from "../Firebase";
 
 function Data() {
   const [incoexpence, setIncoexpence] = useState({});
-  const [values, setValues] = useState({});
 
   const data = () => {
     db.collection("incoexpence")
@@ -49,6 +48,34 @@ function Data() {
     return newIncoexpence;
   };
 
+  const sameCategory = (incoexpence) => {
+    let categories = [];
+    incoexpence.length !== undefined && incoexpence.forEach((item) => {
+      if (categories.length === 0) {
+        if (item.incoexp === "Expence") {
+        categories.push({ category: item.category, amount: item.amount });
+        }
+      } else {
+        let found = false;
+        categories.forEach((newItem) => {
+          if (newItem.category === item.category) {
+            if (item.incoexp === "Expence") {
+              newItem.amount += item.amount;
+            } 
+            found = true;
+          }
+        });
+        if (!found) {
+          if (item.incoexp === "Expence") {
+          categories.push({ category: item.category, amount: item.amount });
+          }
+        }
+      }
+    } );
+    return categories;
+  }
+
+
   const getData = () => {
     if (incoexpence.length === undefined) {
       data();
@@ -85,7 +112,7 @@ function Data() {
         pointHoverBackgroundColor: "rgba(75,192,192,1)",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
-        pointRadius: 1,
+        pointRadius: 5,
         pointHitRadius: 10,
         data:
           incoexpence.length !== undefined
@@ -108,7 +135,7 @@ function Data() {
         pointHoverBackgroundColor: "rgba(75,192,192,1)",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
-        pointRadius: 1,
+        pointRadius: 5,
         pointHitRadius: 10,
         data:
           incoexpence.length !== undefined
@@ -127,7 +154,7 @@ function Data() {
         : "empty",
     datasets: [
       {
-        label: "Daily Profit",
+        label: "Daily Balance",
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75,192,192,0.4)",
@@ -140,11 +167,34 @@ function Data() {
         pointHoverBackgroundColor: "rgba(75,192,192,1)",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
-        pointRadius: 1,
+        pointRadius: 5,
         pointHitRadius: 10,
         data:
           checkIfSameDate(incoexpence).length !== undefined
             ? checkIfSameDate(incoexpence).map((item) => item.amount)
+            : "empty",
+      },
+    ],
+  };
+
+  const categoryData = {
+    labels:
+      sameCategory(incoexpence).length !== undefined
+        ? sameCategory(incoexpence).map((item) => item.category !== "" ? item.category : "Other")
+        : "empty",
+    datasets: [
+      {
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        data:
+          sameCategory(incoexpence).length !== undefined
+            ? sameCategory(incoexpence).map((item) => item.amount)
             : "empty",
       },
     ],
@@ -157,6 +207,10 @@ function Data() {
       </div>
       <div className="all-data">
         <Line data={datam} />
+      </div>
+      <div className="doug-data">
+        <h2>Expence Details</h2>
+        <Doughnut data={categoryData} />
       </div>
     </div>
   );

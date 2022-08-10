@@ -8,18 +8,18 @@ export default function History() {
     const data = () => {
         db.collection("incoexpence")
             .where("userUid", "==", auth.currentUser.uid)
+            .orderBy("date", "desc")
             .onSnapshot((snapshot) => {
                 setIncoexpence(
                     snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
-                    }))
+                    })).sort((a, b) => a.date + b.date)
                 );
             });
     }
     React.useEffect(() => {
         data();
-        console.log("history")
     } , []);
 
 
@@ -27,11 +27,11 @@ export default function History() {
         if (incoexpence.length !== undefined) {
             return incoexpence.map((item) => {
                 return (
-                <div>
+                <div key={item.id} className={`history-card ${item.incoexp === "Income" ? "profit" : "loss"}`}>
                     <h1>{item.incoexp === "Income" ? item.amount : -item.amount}</h1>
                     <h2>{item.date}</h2>
-                    <h2>{item.category === "" ? "Category Undefined" : item.category}</h2>
-                    <h2>{item.description}</h2>
+                    <h2>{item.category === "" ? "Category Undefined" : `Category: ${item.category}`}</h2>
+                    <h2>{item.description === "" ? "Description Undefined" : `Description: ${item.description}`}</h2>
                 </div>
                 )
             } )
